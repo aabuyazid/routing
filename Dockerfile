@@ -1,7 +1,8 @@
-FROM maven:3.9.3-eclipse-temurin-17
+FROM eclipse-temurin:17-jdk-alpine
 COPY . /app/routing
 WORKDIR /app/routing
 RUN ls -la
+RUN ls /root
 RUN ./mvnw clean install
 ENTRYPOINT ["java", "-jar", "./target/routing-1.0.2.RELEASE.jar"]
 
