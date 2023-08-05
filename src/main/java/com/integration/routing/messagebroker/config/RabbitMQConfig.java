@@ -79,4 +79,60 @@ public class RabbitMQConfig {
         return rabbitTemplate;
     }
     // *** Messages of JSON END ***
+
+    // *** Messages of RoutingRequest START ***
+    @Value("${rabbitmq.routing.request.queue}")
+    private String requestQueue;
+
+    @Value("${rabbitmq.routing.request.exchange}")
+    private String requestExchange;
+    // spring bean for rabbitmq queue
+
+    @Value("${rabbitmq.routing.request.routing.key}")
+    private String requestRoutingKey;
+    @Bean
+    public Queue requestQueue() {
+        return new Queue(requestQueue);
+    }
+
+    @Bean
+    public TopicExchange requestExchange() {
+        return new TopicExchange(requestExchange);
+    }
+
+    @Bean
+    public Binding requestBinding() {
+        return BindingBuilder.bind(requestQueue())
+                .to(requestExchange())
+                .with(requestRoutingKey);
+    }
+// *** Messages of RoutingRequest END ***
+
+// *** Messages of RoutingResponse START ***
+@Value("${rabbitmq.routing.response.queue}")
+private String responseQueue;
+
+    @Value("${rabbitmq.routing.response.exchange}")
+    private String responseExchange;
+    // spring bean for rabbitmq queue
+
+    @Value("${rabbitmq.routing.response.routing.key}")
+    private String responseRoutingKey;
+    @Bean
+    public Queue responseQueue() {
+        return new Queue(responseQueue);
+    }
+
+    @Bean
+    public TopicExchange responseExchange() {
+        return new TopicExchange(responseExchange);
+    }
+
+    @Bean
+    public Binding responseBinding() {
+        return BindingBuilder.bind(responseQueue())
+                .to(responseExchange())
+                .with(responseRoutingKey);
+    }
+// *** Messages of RoutingRequest END ***
 }
