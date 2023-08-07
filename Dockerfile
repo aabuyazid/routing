@@ -4,7 +4,8 @@ WORKDIR /app/routing
 RUN ls -la
 RUN ls /root
 RUN ./mvnw clean install
-ENTRYPOINT ["java", "-jar", "./target/routing-1.0.2.RELEASE.jar"]
+ENTRYPOINT ["./mvnw", "spring-boot:run"]
+#ENTRYPOINT ["java", "-jar", "./target/routing-1.0.2.RELEASE.jar"]
 
 #FROM openjdk:17
 #
