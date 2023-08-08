@@ -1,13 +1,17 @@
 services:
   postgres:
     image: 'postgres:15.3'
-    hostname: 'postgres-database'
+    hostname: 'db'
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=password'
-      - 'POSTGRES_USER=wiener'
+#      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_PASSWORD=test'
+      - 'POSTGRES_USER=test'
+#      - 'PGUSER=test'
     ports:
       - '5432:5432'
+    restart: unless-stopped
+    volumes:
+      - './data/postgres:/var/lib/postgresql/data'
   rabbitmq:
     image: 'rabbitmq:3-management'
     hostname: 'rabbitmq-container'
@@ -17,12 +21,8 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
-  routing:
-    container_name: 'routing'
-    build:
-      context: '.'
-      dockerfile: 'Dockerfile'
-    image: 'routing:latest'
+  app:
+    image: 'routing:1.0.2.RELEASE'
     ports:
       - '8080:8080'
     depends_on:
@@ -35,3 +35,22 @@ services:
       - 'spring_rabbitmq_password=secret'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+
+#  routing:
+#    container_name: 'routing'
+#    build:
+#      context: '.'
+#      dockerfile: 'Dockerfile'
+#    image: 'routing:latest'
+#    ports:
+#      - '8080:8080'
+#    depends_on:
+#      - 'postgres'
+#      - 'rabbitmq'
+#    environment:
+#      - 'spring_rabbitmq_host=rabbitmq-container'
+#      - 'spring_rabbitmq_port=5672'
+#      - 'spring_rabbitmq_username=myuser'
+#      - 'spring_rabbitmq_password=secret'
+#    extra_hosts:
+#      - 'host.docker.internal:host-gateway'
