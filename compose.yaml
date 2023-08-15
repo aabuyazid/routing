@@ -13,6 +13,8 @@ services:
     volumes:
       - './data/postgres:/var/lib/postgresql/data'
       - './sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql'
+    networks:
+      - 'mynet'
   rabbitmq:
     image: 'rabbitmq:3-management'
     hostname: 'rabbitmq-container'
@@ -22,6 +24,8 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
+    networks:
+      - 'mynet'
   app:
     image: 'routing:1.0.2.RELEASE'
     ports:
@@ -29,6 +33,8 @@ services:
     depends_on:
       - 'postgres'
       - 'rabbitmq'
+    networks:
+      - 'mynet'
     environment:
       - 'spring_rabbitmq_host=rabbitmq-container'
       - 'spring_rabbitmq_port=5672'
@@ -36,6 +42,9 @@ services:
       - 'spring_rabbitmq_password=secret'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+networks:
+  mynet:
+    driver: 'bridge'
 
 #  routing:
 #    container_name: 'routing'
