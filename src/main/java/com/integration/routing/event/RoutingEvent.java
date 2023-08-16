@@ -1,10 +1,7 @@
 package com.integration.routing.event;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
@@ -16,29 +13,27 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "RoutingEventHistory")
 public class RoutingEvent {
-    @Column(name = "id", nullable = false)
+    @Column(name = "RoutingId", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int routingId;
 
-    @Column(name = "DateReceived", nullable = false)
-    private LocalDateTime dateReceived;
+    @Column(name = "SupergwId", nullable = false)
+    private final int supergwId;
 
-    @Column(name = "DateSent", nullable = false)
-    private LocalDateTime dateSent;
+    @Column(name = "DateReceived", nullable = false, columnDefinition = "TIMESTAMP")
+    private final LocalDateTime dateReceived;
+
+    @Column(name = "DateSent", nullable = false, columnDefinition = "TIMESTAMP")
+    private final LocalDateTime dateSent;
 
     @Column(name = "Sender", nullable = false)
-    private String sender; //This should be some number or key
+    private final String sender; //This should be some number or key
 
     @Column(name = "Receiver", nullable = false)
-    private String receiver; //This should be some number or key
+    private final String receiver; //This should be some number or key
 
     @Column(name = "Payload")
     // JSON Object serialized into a string
-    private String payload;
-
-    void setPayloadJSON(JSONObject jsonObject) {
-        String payload = jsonObject.toString();
-        setPayload(payload);
-    }
+    private final String payload;
 }

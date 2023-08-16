@@ -1,6 +1,7 @@
 -- Creating RoutingEventHistory --
-CREATE TABLE IF NOT EXISTS RoutingEventHistory (
-    id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS RoutingEventRepository (
+    routingId INT NOT NULL,
+    supergwId INT NOT NULL,
     dateTimeReceived TIMESTAMP NOT NULL,
     dateTimeSent TIMESTAMP NOT NULL,
     receiver varchar(128) NOT NULL,

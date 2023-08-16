@@ -29,7 +29,7 @@ public class RoutingResponseProducer {
     }
 
     public void sendResponse(RoutingEvent routingEvent) {
-        LOGGER.info(String.format("Sending routingEvent %s to response queue", routingEvent.getId()));
+        LOGGER.info(String.format("Sending routingEvent %s to response queue", routingEvent.getRoutingId()));
         rabbitTemplate.convertAndSend(exchange, routingKey, routingEvent);
     }
 }

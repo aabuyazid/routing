@@ -1,13 +1,20 @@
 package com.integration.routing.messagebroker.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class RabbitMQConfig {
@@ -71,6 +78,15 @@ public class RabbitMQConfig {
     @Bean
     public MessageConverter deserializeJSON() {
         return new Jackson2JsonMessageConverter();
+    }
+
+    private static final String dateTimeFormat= "yyyy-MM-dd HH:mm:ss";
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+        return builder -> {
+            builder.simpleDateFormat(dateTimeFormat);
+            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+        };
     }
 
     public AmqpTemplate ampqTemplate(ConnectionFactory conectionFactory) {
