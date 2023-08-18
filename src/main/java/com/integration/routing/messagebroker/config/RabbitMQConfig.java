@@ -1,6 +1,7 @@
 package com.integration.routing.messagebroker.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.amqp.core.*;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.time.format.DateTimeFormatter;
 
@@ -76,22 +78,17 @@ public class RabbitMQConfig {
 
     // *** Messages of JSON START ***
     @Bean
-    public MessageConverter deserializeJSON() {
-        return new Jackson2JsonMessageConverter();
+    public MessageConverter deserializeJSON(Jackson2ObjectMapperBuilder builder) {
+        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     private static final String dateTimeFormat= "yyyy-MM-dd HH:mm:ss";
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
-        return builder -> {
-            builder.simpleDateFormat(dateTimeFormat);
-            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
-        };
-    }
 
     public AmqpTemplate ampqTemplate(ConnectionFactory conectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(conectionFactory);
-        rabbitTemplate.setMessageConverter(deserializeJSON());
+        rabbitTemplate.setMessageConverter(deserializeJSON(new Jackson2ObjectMapperBuilder()));
         return rabbitTemplate;
     }
     // *** Messages of JSON END ***

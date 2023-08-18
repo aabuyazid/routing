@@ -30,6 +30,7 @@ services:
     image: 'routing:1.0.2.RELEASE'
     ports:
       - '8080:8080'
+      - '5005:5005'
     depends_on:
       - 'postgres'
       - 'rabbitmq'

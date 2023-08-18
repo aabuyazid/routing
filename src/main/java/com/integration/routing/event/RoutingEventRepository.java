@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RoutingEventRepository extends JpaRepository<RoutingEvent, Long> {
-    @Query("SELECT rEvent FROM RoutingEventHistory rEvent")
+    @Query("SELECT rEvent FROM RoutingEvent rEvent")
     List<RoutingEvent> findAllRoutingEvents(Sort sort);
 
     @Modifying
     @Query(
         value =
-            "INSERT INTO RoutingEventRepository (supergwId, dateTimeReceived, dateTimeSent, receiver, sender, payload) VALUES (:supergwId, :dateReceived, :dateSent, :receiver, :sender, :payload)",
+            "INSERT INTO RoutingEvent (supergwId, dateTimeReceived, dateTimeSent, receiver, sender, payload) VALUES (:supergwId, :dateReceived, :dateSent, :receiver, :sender, :payload)",
         nativeQuery = true)
     void insertRoutingEvent(@Param("supergwId") int supergwId, @Param("dateReceived") LocalDateTime dateReceived,
                             @Param("dateSent") LocalDateTime dateSent, @Param("receiver") String receiver,
