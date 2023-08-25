@@ -1,5 +1,6 @@
 package com.integration.routing.event;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,13 +11,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RoutingEventRepository extends JpaRepository<RoutingEvent, Long> {
-    @Query("SELECT rEvent FROM RoutingEvent rEvent")
-    List<RoutingEvent> findAllRoutingEvents(Sort sort);
 
+    @Query(value = "SELECT r FROM RoutingEvent r WHERE r.supergw_id = :supergwId")
+    List<RoutingEvent> findBySupergwId(@Param("supergwId") int supergwId);
     @Modifying
+    @Transactional
     @Query(
         value =
-            "INSERT INTO RoutingEvent (supergwId, dateTimeReceived, dateTimeSent, receiver, sender, payload) VALUES (:supergwId, :dateReceived, :dateSent, :receiver, :sender, :payload)",
+            "INSERT INTO routing_event_history (supergw_id, datetime_received, datetime_sent, receiver, sender, payload) VALUES (:supergwId, :dateReceived, :dateSent, :receiver, :sender, :payload)",
         nativeQuery = true)
     void insertRoutingEvent(@Param("supergwId") int supergwId, @Param("dateReceived") LocalDateTime dateReceived,
                             @Param("dateSent") LocalDateTime dateSent, @Param("receiver") String receiver,

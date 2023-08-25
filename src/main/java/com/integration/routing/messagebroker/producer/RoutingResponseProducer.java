@@ -2,6 +2,7 @@ package com.integration.routing.messagebroker.producer;
 
 import com.integration.routing.event.RoutingEvent;
 import com.integration.routing.messagebroker.consumer.RoutingRequestProcessor;
+import com.integration.routing.messagebroker.dto.RoutingResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -28,8 +29,8 @@ public class RoutingResponseProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendResponse(RoutingEvent routingEvent) {
-        LOGGER.info(String.format("Sending routingEvent %s to response queue", routingEvent.getRoutingId()));
-        rabbitTemplate.convertAndSend(exchange, routingKey, routingEvent);
+    public void sendResponse(RoutingResponse routingResponse) {
+        LOGGER.info(String.format("Sending routingEvent %s to response queue", routingResponse.toString()));
+        rabbitTemplate.convertAndSend(exchange, routingKey, routingResponse);
     }
 }

@@ -86,8 +86,8 @@ public class RabbitMQConfig {
 
     private static final String dateTimeFormat= "yyyy-MM-dd HH:mm:ss";
 
-    public AmqpTemplate ampqTemplate(ConnectionFactory conectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(conectionFactory);
+    public AmqpTemplate ampqTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(deserializeJSON(new Jackson2ObjectMapperBuilder()));
         return rabbitTemplate;
     }

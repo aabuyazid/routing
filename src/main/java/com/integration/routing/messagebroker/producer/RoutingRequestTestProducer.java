@@ -27,6 +27,6 @@ public class RoutingRequestTestProducer {
 
     public void sendTestMessage(RoutingRequest routingRequest) {
         LOGGER.info(String.format("Message sent -> %s", routingRequest.toString()));
-        rabbitTemplate.convertAndSend(exchange, routingKey, routingRequest.toString());
+        rabbitTemplate.convertAndSend(exchange, routingKey, routingRequest);
     }
 }

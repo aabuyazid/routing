@@ -11,29 +11,29 @@ import java.time.LocalDateTime;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "RoutingEventHistory")
+@Table(name = "routing_event_history")
 public class RoutingEvent {
-    @Column(name = "RoutingId", nullable = false)
+    @Column(name = "routing_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int routingId;
 
-    @Column(name = "SupergwId", nullable = false)
+    @Column(name = "supergw_id", nullable = false)
     private final int supergwId;
 
-    @Column(name = "DateReceived", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "datetime_received", nullable = false, columnDefinition = "TIMESTAMP")
     private final LocalDateTime dateReceived;
 
-    @Column(name = "DateSent", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "datetime_sent", nullable = false, columnDefinition = "TIMESTAMP")
     private final LocalDateTime dateSent;
 
-    @Column(name = "Sender", nullable = false)
+    @Column(name = "sender", nullable = false)
     private final String sender; //This should be some number or key
 
-    @Column(name = "Receiver", nullable = false)
+    @Column(name = "receiver", nullable = false)
     private final String receiver; //This should be some number or key
 
-    @Column(name = "Payload")
+    @Column(name = "payload")
     // JSON Object serialized into a string
     private final String payload;
 }
